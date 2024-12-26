@@ -1,0 +1,342 @@
+---
+title: Titre 
+subtitle: Sous-titre 
+date: today
+authors:
+  - name: Prénom Nom
+    affiliations: Laboratoire, Organisme
+    orcid: 0000-0000-0000-0000
+  - name: Prénom Nom
+    affiliations: Laboratoire, Organisme
+    orcid: 0000-0000-0000-0000
+doi: 10.00000/xxxx-xxxx
+abstract: |
+    Résumé court de la publication (50 mots maximum)
+keywords: 
+- mot-clé 
+- mot-clé 2
+- etc.
+
+bibliography: bibliography.bib
+lang: fr-FR
+embed-resources: true
+format:
+  rzine-html: default
+---
+
+
+
+## Métadonnées du document (YAML)
+
+L’en-tête d’un document Quarto (aussi appelé YAML) est délimité par deux lignes de pointillés et contient les métadonnées et les éléments de style du document.
+
+Il sert à recueillir le titre de votre contribution et des informations supplémentaires sur votre affiliation, des mots-clés, etc. 
+
+```{markdown}
+---
+title: Le titre de votre contribution (obligatoire)
+subtitle: Son sous titre (optionnel)
+format:
+  rzine-html: default (ne pas modifier)
+lang: fr-FR (en-EN si anglais)
+date: "2024-09-05" (date de dernière modification, obligatoire)
+authors:
+  - name: Prénom Nom (obligatoire)
+    affiliations:
+      - name: L'organisme qui vous emploie (obligatoire)
+        department: Votre laboratoire d'appartenance (optionnel)
+        address: Adresse de votre laboratoire (optionnel)
+        city: Ville d'appartenance du laboratoire (optionnel)
+        country: Pays d'appartenance du laboratoire (optionnel)
+        postal-code: Code postal du laboratoire (optionnel)
+    orcid: Vos identifiants ORCID (optionnel)
+    url: URL qui renvoie vers votre blog/CV en ligne (optionnel)
+  - name: Si plusieurs auteurs (reproduire les champs ci-dessus)
+abstract: |
+    Un résumé de votre contribution, aussi présent dans le REAME.md (obligatoire)
+keywords: [un mot clé, un deuxième mot clé] (obligatoire)
+---
+```
+
+
+## Les blocs de texte (markdown)
+
+Le contenu écrit de votre contribution, expliquant **votre démarche et la succession des traitements proposés** est à écrire dans un langage de balisage léger, le **markdown**.
+
+
+### Syntaxe de base
+
+Le corps du document est constitué de texte en syntaxe Markdown. Le markdown est un langage de balisage léger et très facile à maîtriser. 
+
+Il permet de définir des niveaux de titres, de mettre en forme le texte (gras, italique), d'ajouter des liens cliquables, etc.
+
+Par exemple, le texte suivant: 
+
+```{markdown}
+Ceci est du texte en *italique*, **gras** ou en ***Gras italique***.
+
+Pour définir des listes à puces, utilisez les **tirets** :
+
+- premier élément
+- deuxième élément
+
+Vous pouvez également ajouter des [liens cliquables](https://rzine.fr/) 
+```
+
+Se formalisera comme cela dans le fichier HTML produit à partir du R Markdown :
+
+Ceci est du texte en *italique*, **gras** ou en ***Gras italique***.
+
+Pour définir des listes à puces, utilisez les **tirets** :
+
+- premier élément
+- deuxième élément
+
+Vous pouvez également ajouter des [liens cliquables](https://rzine.fr/) 
+
+Pour en savoir plus, se reporter au [Markdown Guide](https://www.markdownguide.org/cheat-sheet/).
+
+
+### Formules mathématiques
+
+Il est possible d'écrire des formules mathématiques en langage $\TeX$. Pour cela, il suffit de délimiter le contenu $\LaTeX$ par **un ou deux** symboles **$**, ex :  
+
+```
+$$ y = \sqrt{\frac{1}{x + \beta}} $$ 
+```
+En mode ***Inline*** (**`$`**) , les formules sont incluses à l'intérieur du paragraphe courant, ex : $\sum_{i=1}^n X_i$    
+
+En mode ***Displayed*** (**`$$`**), elles apparaissent centrées et mises en exergue, ex : $$ y = \sqrt{\frac{1}{x + \beta}} $$   
+
+
+### Otions utiles avec Quarto
+
+Quarto fournit plusieurs options qui ne relèvent pas du markdown mais utiles à connaître pour paramétrer son document. 
+
+#### Callouts blocks
+
+Les [**callouts block**](https://quarto.org/docs/authoring/callouts.html) sont utiles pour attirer l'attention sur certains concepts.
+```{r}
+#| eval: false
+
+::: {.callout-tip}
+## Intéressés par la collection Rzine ?
+    
+Consultez les [articles](https://rzine.fr/articles_rzine/) déjà publiés !
+![](figures/article_rzine.png)
+:::
+  
+```
+      
+::: {.callout-tip}
+## Intéressés par la collection Rzine ?
+
+Consultez les [articles](https://rzine.fr/articles_rzine/) déjà publiés !
+
+![](figures/article_rzine.png)
+:::
+
+Nous déconseillons en revanche l'usage des classes préformatées de type `tabset` dont la sortie n'est pas adaptée aux autres sorties qu'HTML. 
+
+
+
+## Les blocs de code (chunks)
+
+Le code R est à inclure dans des chunks. Veillez à bien commenter votre code et qu'il soit aussi clair que possible. Veillez aussi à ce que l'ensemble des chunks s'exécutent sans erreur et qu'ils produisent bien les figures attendues dans le fichier HTML compilé en fin de processus. 
+
+### Initier et paramétrer un chunk
+
+Dans l'univers de Quarto, le code R s'exécute dans des ***chunks***. Pour insérer un nouveau chunk, utilisez le menu `Code > Insert Chunk` de RStudio. Vous pouvez également utiliser le raccourci clavier `Ctrl+Alt+i`.
+
+- La première ligne `{r plot_basique}` ci-dessous définit le langage de programmation mobilisé et le nom du *chunk*. Il n’est pas obligatoire de nommer un chunk, mais cela peut être utile pour localiser une erreur lors de la compilation.
+- Des options d'exécution qui permettent de paramétrer la sortie du code. Dans le *chunk* ci-dessous le code est évalué (`eval: true`), la sortie graphique sera de taille 3 (`fig-height: 3`) et de largeur 7 (`fig-width: 7`), elle dispose d'un label (`label: fig-1`) qui permet utilement de l'appeler dans le corps du texte avec `@fig-2` qui renvoie ceci dans le corps du document (@fig-2) et d'un nom qui permet la numérotation et le nommage (`fig-cap: Un plot de base`) de la figure dans le document. De nombreuses autres options sont disponibles et documentées dans la [documentation](https://quarto.org/docs/computations/execution-options.html) de Quarto. 
+- A noter que les options du chunk n'apparaîtront pas lors de la compilation du document, sauf si l'option `#| echo: fenced` est spécifiée. 
+
+```{r plot_basique}
+#| echo: fenced
+#| eval: true
+#| fig-cap: Un plot de base
+#| fig-height: 3
+#| fig-width: 7
+
+plot(1:10)
+```
+
+A noter qu'un document Quarto peut contenir des blocs de code issus de langages informatiques différents (ObservableJS, Python, etc). A titre d'exemple, vous pouvez consulter [ce document](https://riatecom.github.io/sageo-2023/), basé sur un document Quarto qui combine 3 langages de programmation.  
+
+
+### Insérer une image
+
+Les images insérées dans l'article sont à déposer dans le dossier `figures`.
+
+Il existe plusieurs façons d'importer une image dans un document Quarto, notamment avec du markdown de base.
+
+Dans Rzine et pour un référencement optimal de la figure (label, numérotation, citation), privilégiez l'import de celle-ci dans un *chunk* en renseignant les options `#| label` (valeur unique requise) et `#| fig-cap`.
+
+```{r}
+#| echo: fenced
+#| label: fig-3
+#| fig-cap: "Une bien belle image"
+
+knitr::include_graphics("figures/article_rzine.png")
+```
+
+
+## Références
+
+Une bibliographie est a minima attendue. Elle sert à positionner votre contribution dans le champ thématique et/ou disciplinaire. Le glossaire est optionnel mais permet souvent utilement de rendre plus fluide le corps du document principal. 
+
+### Bibliographie
+
+Les références bibliographiques sont à inclure dans le fichier bibliographie.bib situé à la racine du répertoire Rzine. Il s'agit d'un fichier au format BibTeX, qui sert à gérer et traiter des bases bibliographiques. 
+
+```{r}
+#| eval: false
+
+@book{CameronTrivedi2013,
+  author    = {A. Colin Cameron and Pravin K. Trivedi},
+  title     = {Regression Analysis of Count Data},
+  year      = {2013},
+  edition   = {2nd},
+  publisher = {Cambridge University Press},
+  address   = {Cambridge}
+}
+```
+
+L'appel d'une ressource bibliographique dans le texte s'effectue ensuite au moyen de l'identifiant de bibliographie (`@CameronTrivedi2013` ici) et renvoie dans le document compilé une référence correctement formatée @CameronTrivedi2013 et rajoute une section de bibliographie en fin de document. 
+
+Pour un apperçu complet des possibilités offertes pour référencer les sources de données, se reporter à [cette documentation](https://bibtex.eu/types/).
+
+### Glossaire
+
+ Pour que l’ensemble de la démonstration soit compréhensible par un public large, vous pouvez utiliser la section “glossaire” pour définir certains termes utilisés dans la fiche.
+
+Pour cela, il suffit d’utiliser la syntaxesuivante dans le corps du texte :
+
+```{r}
+#| eval: false
+
+Voici un terme bien technique qui mériterait quelques précisions [^1] et
+un second référence [^2]
+
+[^1]: Voici la définition du premier terme
+
+[^2]: Et le second
+```
+
+Au moment de la compilation du document, un numéro est associé et affiché après le “mot à définir”. Et ce mot et sa définition seront ajoutés dans la section glossaire.
+
+Un lien interactif est alors automatiquement crée entre le “mot” dans le corps du texte et sa définition dans la section “Glossaire”.
+
+Par exemple, le bloc précédent produira ceci dans le document compilé. 
+
+Voici un terme bien technique qui mériterait quelques précisions [^1] et
+un second référence [^2]
+
+[^1]: Voici la définition du premier terme
+
+[^2]: Et le second
+
+
+# Données utilisées
+
+Tout lecteur.ice doit être en mesure de reproduire la démonstration de l'article sans contrainte de réutilisation. L’intégralité des données utilisées doivent ainsi :
+
+- Être **présentées et décrites** dans l'article.
+- Être **libre d’utilisation et de diffusion**.
+- Être **mises à disposition des lecteur.rice.s**, même si ces données sont déjà en libre accès.
+- Être **associées à des métadonnées** qui permettent de retracer et comprendre ces données.
+- Respecter le [**règlement général sur la protection des données**](https://www.cnil.fr/fr/reglement-europeen-protection-donnees).
+
+Toutes les données chargées et utilisées dans une fiche devront être stockées dans le répertoire **Data**, disponible dans le dépôt GitHub. 
+
+## Exemple
+
+L'article Rzine [Analyse Territoriale Multiscalaire](https://rzine.fr/docs/20211101_ysebaert_grasland_MTA/index.html) peut servir d'exemple.
+
+Les données mobilisées sont accessibles dans le dossier `data` :
+
+```{r}
+#| message: false
+#| eval: false
+
+library(sf)
+
+com <- st_read("data/data.gpkg", layer = "com", quiet = TRUE)
+head(com)
+```
+À ces données sont associées un fichier de métadonnées qui décrit les indicateurs (code + label) ainsi que les sources des données mobilisées :
+
+```{r}
+#| eval: false
+
+library(kableExtra)
+meta <- read.csv("data/com_meta.csv")
+
+kable(meta, booktabs = T, caption = "margin")
+```
+
+L'article présente par ailleurs dans [une section dédiée](https://rzine.fr/docs/20211101_ysebaert_grasland_MTA/index.html#sources-mobilis%C3%A9es) les sources de données mobilisées. 
+
+
+# Compiler une fiche Rzine au format HTML
+
+La compilation d'un fichier .qmd (*render* avec Quarto) permet d'exécuter l'entièreté des blocs de code contenus dans un document Quarto au format HTML. Il est possible de réaliser cette opération de plusieurs façons :
+
+- En utilisant le bouton **Render** dans l'interface RStudio:
+
+![](figures/rstudio-render.png)
+- Dans le terminal en utilisant la commande `quarto render`:
+
+```{markdown}
+quarto render document.qmd # all formats
+quarto render document.qmd --to pdf
+quarto render document.qmd --to docx
+```
+
+Render votre article Quarto aura pour conséquence la création d’un fichier du même nom au format HTML. Il s’agit de votre article mis en page avec le modèle rzine (paramètres inclus dans le dossier `_extension`, à ne pas modifier).
+
+
+Ce fichier HTML est automatiquement enregistré à la racine du répertoire source, ce sera lui qui sera publié à la fin du cycle de relecture. 
+
+
+# Versions utilisées {.appendix .unnumbered}
+
+```{r session-info}
+#| echo: false
+sessionInfo()
+```
+
+## Exécuter du code
+
+Cliquer sur **Render** dans l'IDE RStudio générera un article au format HTML suivant le modèle de mise en page Rzin qui contiendra votre article et son code embarqué :
+
+```{r}
+#| fenced: true
+
+1 + 1
+```
+
+
+## Insérer une image
+
+Pour incorporer une figure externe au code R, citable dans le corps du texte (@fig-1). 
+
+```{r fig11}
+#| fenced: true
+#| label: fig-1
+#| fig-cap: "Les articles rzine"
+
+knitr::include_graphics("figures/article_rzine.png")
+```
+
+Ou issu du code (@fig-2)
+
+```{r plot_basique1}
+#| fenced: true
+#| label: fig-2
+#| fig-cap: "Un plot de base"
+
+plot(1:10)
+```
+
